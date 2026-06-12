@@ -1,0 +1,137 @@
+/*
+===============================================================================
+LeetCode 88. Merge Sorted Array
+===============================================================================
+
+Question:
+---------
+You are given two integer arrays nums1 and nums2, sorted in non-decreasing order,
+and two integers m and n, representing the number of elements in nums1 and nums2.
+
+Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+
+The final sorted array should NOT be returned by the function.
+Instead, it should be stored inside nums1.
+
+Important:
+----------
+- nums1 has size m + n.
+- The first m elements of nums1 are valid elements.
+- The last n elements of nums1 are 0 and are placeholders.
+- nums2 contains n valid elements.
+
+Example:
+---------
+Input:
+nums1 = [1,2,3,0,0,0]
+m = 3
+
+nums2 = [2,5,6]
+n = 3
+
+Output:
+[1,2,2,3,5,6]
+
+===============================================================================
+Approach: Three Pointer Technique (Merge From End)
+===============================================================================
+
+Data Structure Used:
+--------------------
+- vector<int>
+
+Why Merge From End?
+-------------------
+If we start filling nums1 from the beginning,
+existing elements may get overwritten.
+
+Since nums1 already contains extra space at the end,
+we can safely fill the array from the last index.
+
+Pointers Used:
+--------------
+i -> Last valid element in nums1
+
+j -> Last element in nums2
+
+k -> Last position of nums1 where merged result
+     should be placed
+
+Time Complexity:
+----------------
+O(m + n)
+
+Reason:
+Each element from nums1 and nums2 is processed once.
+
+Space Complexity:
+-----------------
+O(1)
+
+Reason:
+No extra array is used.
+
+===============================================================================
+*/
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+
+        // Pointer to last valid element in nums1
+        int i = m - 1;
+
+        // Pointer to last element in nums2
+        int j = n - 1;
+
+        // Pointer to last position of nums1
+        int k = m + n - 1;
+
+        /*
+        Compare elements from the back of both arrays.
+
+        Place the larger element at position k,
+        then move the corresponding pointer.
+        */
+        while (i >= 0 && j >= 0) {
+
+            // If current nums1 element is larger
+            if (nums1[i] > nums2[j]) {
+
+                // Place nums1 element at current result position
+                nums1[k] = nums1[i];
+
+                // Move nums1 pointer left
+                i--;
+            }
+            else {
+
+                // Place nums2 element at current result position
+                nums1[k] = nums2[j];
+
+                // Move nums2 pointer left
+                j--;
+            }
+
+            // Move result pointer left
+            k--;
+        }
+
+        /*
+        If nums2 still contains elements,
+        copy them into nums1.
+
+        Remaining nums1 elements are already
+        in their correct position.
+        */
+        while (j >= 0) {
+
+            // Copy remaining nums2 element
+            nums1[k] = nums2[j];
+
+            // Move pointers left
+            j--;
+            k--;
+        }
+    }
+};
